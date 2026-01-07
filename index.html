@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ein Arbeiterleben im Deutschen Kaiserreich</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="paper">
+            <div class="header">
+                <h1>Ein Arbeiterleben im Deutschen Kaiserreich</h1>
+                <p class="subtitle">1870 – 1890</p>
+            </div>
+            
+            <div id="game-content">
+                <div id="story-section">
+                    <h2 id="question-title"></h2>
+                    <div id="situation-text"></div>
+                </div>
+                
+                <div id="choices-section">
+                    <h3>Was tust du?</h3>
+                    <div id="choices-container"></div>
+                </div>
+                
+                <div id="consequence-section" style="display:  none;">
+                    <div class="consequence-box">
+                        <h3>Konsequenz: </h3>
+                        <p id="consequence-text"></p>
+                        <button id="continue-btn" class="continue-button">Weiter</button>
+                    </div>
+                </div>
+                
+                <div id="ending-section" style="display: none;">
+                    <div class="ending-box">
+                        <h2 id="ending-title"></h2>
+                        <p id="ending-text"></p>
+                        <button id="restart-btn" class="restart-button">Neu beginnen</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>Historisches Lernszenario zur Industrialisierung und sozialen Frage</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
