@@ -64,7 +64,56 @@ body {
     text-align: center;
     border-bottom: 3px double #8b7355;
     padding-bottom: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+}
+
+#progress-bar {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background: #d4c4a8;
+    border: 2px solid #8b7355;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+#progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #8b7355 0%, #6a5745 100%);
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+#progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #2a1810;
+    font-weight: bold;
+    font-size: 0.95em;
+    text-shadow: 0 0 3px #f4e8d0;
+}
+
+#state-panel {
+    display: flex;
+    justify-content: space-around;
+    background: #ede0c8;
+    border: 2px solid #8b7355;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.state-item {
+    font-size: 1.1em;
+    color: #2a1810;
+    font-weight: bold;
+}
+
+.state-icon {
+    font-size: 1.3em;
+    margin-right: 5px;
 }
 
 .header h1 {
