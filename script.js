@@ -89,6 +89,87 @@ const storyTree = {
         ]
     },
     
+    question3_alone_debt: {
+        title: "Frühjahr 1873 – Gefangen in Schulden",
+        situation: `Der Schnapsverkäufer hat dich in der Falle. Jeden Freitag nimmt er die Hälfte deines Lohns direkt an der Zeche. Du kannst nicht mehr nach Hause schicken. Deine Mutter schreibt verzweifelte Briefe. Im April stirbt dein jüngster Bruder an Hunger. Du trinkst noch mehr, um zu vergessen.`,
+        choices: [
+            {
+                text: "Du versuchst, die Schulden abzuarbeiten und nüchtern zu werden.",
+                consequence: "Nach einem Jahr harter Arbeit und Verzicht bist du schuldenfrei. Aber die Familie hat gelitten. Du bist verbittert, aber frei.",
+                next: "question4_alone_guilt"
+            },
+            {
+                text: "Du fliehst nachts aus Bochum, ohne die Schulden zu zahlen.",
+                consequence: "Du marschierst nach Dortmund. Dort findest du Arbeit in einer anderen Zeche unter falschem Namen. Du lebst in ständiger Angst, erkannt zu werden.",
+                next: "question6_new_job"
+            },
+            {
+                text: "Du gibst auf und säufst dich zu Tode.",
+                consequence: "Im Herbst 1873 bricht deine Leber zusammen. Du stirbst mit 15 Jahren in der Schlafstelle. Der Schnapsverkäufer nimmt deine Jacke als letzte Zahlung.",
+                next: "ending_broken"
+            },
+            {
+                text: "Du gehst zum Knappverein und bittest um Hilfe gegen den Wucherer.",
+                consequence: "Der Verein konfrontiert den Schnapsverkäufer öffentlich. Nach einer heftigen Auseinandersetzung wird ein Kompromiss gefunden. Du zahlst die Hälfte der Schulden ab.",
+                next: "question4_knappverein"
+            }
+        ]
+    },
+    
+    question3_alone_crisis: {
+        title: "Frühjahr 1873 – Die Wirtschaftskrise",
+        situation: `Der Wiener Börsenkrach hat die gesamte Wirtschaft getroffen. Dein Lohn wurde auf 7 Silbergroschen gekürzt. Die Zeche droht mit weiteren Entlassungen. Andere Bergleute werden aggressiv – jeder hat Angst um seine Stelle. Die Stimmung ist explosiv.`,
+        choices: [
+            {
+                text: "Du arbeitest härter und länger, um deine Stelle zu sichern.",
+                consequence: "Du machst Überstunden ohne Bezahlung. Nach sechs Monaten kollabierst du vor Erschöpfung. Im Krankenhaus erfährst du: chronische Mangelernährung.",
+                next: "question3_alone_weak"
+            },
+            {
+                text: "Du suchst nach einer anderen Arbeit in Essen oder Dortmund.",
+                consequence: "Überall dasselbe Bild: Lohnkürzungen, Entlassungen. Nach drei Wochen Suche kehrst du zurück. Du hast zwei Wochen Lohn verloren.",
+                next: "question4_alone_guilt"
+            },
+            {
+                text: "Du gehst zu den Treffen des Knapppvereins, wo über Widerstand geredet wird.",
+                consequence: "Im Knappverein lernst du: Die Krise trifft nicht alle gleich. Die Zechenbesitzer machen noch immer Profit. Du beginnst zu verstehen.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du versuchst, zurück aufs Land zu deiner Familie zu gehen.",
+                consequence: "Dort ist es noch schlimmer – die Agrarkrise trifft härter. Nach zwei Monaten gehst du zurück ins Ruhrgebiet. Diesmal mit klarerem Blick.",
+                next: "question4_knappverein"
+            }
+        ]
+    },
+    
+    question3_alone_aware: {
+        title: "Frühjahr 1873 – Erwachendes Bewusstsein",
+        situation: `In der Kneipe hörst du die älteren Bergleute reden. Ein Mann namens Friedrich erzählt von Streiks in Belgien, von Gewerkschaften in England, vom \"Kommunistischen Manifest\". Ein anderer warnt: \"Das Sozialistengesetz kommt bald – dann ist Schluss mit Reden.\" Du beginnst zu verstehen: Das System ist gemacht, um dich unten zu halten.`,
+        choices: [
+            {
+                text: "Du willst mehr lernen und trittst dem Knappverein bei.",
+                consequence: "Im Knappverein bekommst du Zugang zu verbotenen Zeitungen und Flugblättern. Ein alter Sozialdemokrat bringt dir Lesen bei. Deine Welt öffnet sich.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Das ist dir zu gefährlich – du konzentrierst dich auf die Arbeit.",
+                consequence: "Du bleibst unpolitisch, arbeitest weiter. Die Jahre vergehen. 1877 kommt der große Streik – du stehst abseits.",
+                next: "question5_scab"
+            },
+            {
+                text: "Du fragst nach konkreter Hilfe für deine hungernde Familie.",
+                consequence: "Der Knappverein sammelt 3 Taler für dich. Es rettet deine Geschwister über den Winter. Du bist jetzt Teil der Solidargemeinschaft.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du denkst: Diese Reden ändern nichts, Auswandern ist die einzige Lösung.",
+                consequence: "Du sparst zwei Jahre lang jeden Pfennig. 1875 kaufst du eine Schiffspassage nach Amerika.",
+                next: "ending_america"
+            }
+        ]
+    },
+    
     question3_alone_weak: {
         title: "Frühjahr 1874 – Die Familie in Not",
         situation: `Du bist noch immer geschwächt.  Deine Mutter schreibt (der Dorfschullehrer schreibt für sie): Deine 9-jährige Schwester Marie soll in eine Seidenfabrik in Krefeld, 12 Stunden am Spulrad, 4 Silbergroschen am Tag.  "Besser als verhungern", schreibt die Mutter. Du weißt:  Mädchen verlieren in den Fabriken oft Finger, wenn sie müde werden. `,
@@ -143,6 +224,87 @@ const storyTree = {
         ]
     },
     
+    question3_brother_aware: {
+        title: "Frühjahr 1873 – Bildung und Bewusstsein",
+        situation: `Der alte Sozialdemokrat in der Kneipe heißt Otto Weber. Er war 1848 dabei, bei der Revolution. Jetzt lehrt er Heinrich und dich lesen. Heinrich ist begabt – mit 11 Jahren liest er schon Zeitungen. Ihr versteht langsam: Eure Armut ist kein Schicksal, sondern gemacht.`,
+        choices: [
+            {
+                text: "Ihr beide tretet dem Knappverein bei und engagiert euch.",
+                consequence: "Der Verein wird eure zweite Familie. Heinrich wächst im politischen Bewusstsein auf. Als 1877 der Streik kommt, seid ihr vorbereitet.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Das ist zu gefährlich für Heinrich – du schickst ihn zurück nach Hause.",
+                consequence: "Heinrich protestiert, will bleiben und kämpfen. Aber du bestehst darauf. Er geht zurück aufs Land, voller Groll. Du bleibst allein.",
+                next: "question4_alone_guilt"
+            },
+            {
+                text: "Ihr konzentriert euch auf Selbstbildung, haltet euch aus Politik raus.",
+                consequence: "Heinrich und du lernt weiter, bleibt aber unpolitisch. Als der Streik 1877 kommt, steht ihr abseits. Viele verachten euch.",
+                next: "question5_scab"
+            },
+            {
+                text: "Heinrich soll zur Schule – ihr spart für seine Ausbildung.",
+                consequence: "Nach zwei Jahren reicht es für drei Monate Abendschule. Heinrich lernt Schreiben und Rechnen. Er wird später Gewerkschaftssekretär.",
+                next: "question4_knappverein_saved"
+            }
+        ]
+    },
+    
+    question3_brother_crisis: {
+        title: "Frühjahr 1873 – Die Wirtschaftskrise trifft hart",
+        situation: `Der Wiener Börsenkrach hat alles verschlimmert. Die Mieten steigen, während die Löhne fallen. Ihr könnt eure Ersparnisse nicht halten. Heinrich wird immer dünner – er bekommt nicht genug zu essen. Die Vermieterin droht mit Rauswurf.`,
+        choices: [
+            {
+                text: "Ihr zieht in eine noch billigere Unterkunft – ein Loch im Keller.",
+                consequence: "Der Keller ist feucht und kalt. Im Winter 1873/74 erkrankt Heinrich an schwerem Husten. Die Ersparnisse sind trotzdem weg.",
+                next: "question3_brother_sick"
+            },
+            {
+                text: "Du suchst für Heinrich eine leichtere Arbeit über Tage.",
+                consequence: "Heinrich wird Botenjunge für die Zeche – weniger Lohn (4 Groschen), aber gesünder. Zusammen überlebt ihr die Krise.",
+                next: "question4_knappverein_saved"
+            },
+            {
+                text: "Ihr geht beide zurück ins Dorf – hier gibt es keine Zukunft.",
+                consequence: "Auf dem Land ist es noch schlimmer. Nach drei Monaten Hunger geht ihr doch zurück ins Ruhrgebiet. Diesmal ohne Illusionen.",
+                next: "question4_alone_guilt"
+            },
+            {
+                text: "Ihr geht zum Knappverein und bittet um Unterstützung.",
+                consequence: "Der Verein hilft euch durch die schwerste Zeit. 5 Groschen pro Woche aus der Solidarkasse. Ihr überlebt – und lernt den Wert der Solidarität.",
+                next: "question4_knappverein"
+            }
+        ]
+    },
+    
+    question3_brother_guilt: {
+        title: "Frühjahr 1874 – Das Gewicht der Schuld",
+        situation: `Deine jüngste Schwester ist verhungert, weil ihr besser gegessen habt. Der Brief deiner Mutter ist voller Vorwürfe. Heinrich weint jede Nacht. Er sagt: \"Es ist meine Schuld.\" Du weißt: Das System ist schuld. Aber das hilft nicht gegen das Gefühl.`,
+        choices: [
+            {
+                text: "Ihr schickt ab jetzt alles Geld nach Hause, esst nur Brot.",
+                consequence: "Nach drei Monaten werdet ihr beide krank vor Schwäche. Heinrich bricht zusammen. Ihr müsst mehr essen, oder ihr sterbt auch.",
+                next: "question3_brother_sick"
+            },
+            {
+                text: "Ihr holt eure Mutter und die Geschwister ins Ruhrgebiet.",
+                consequence: "Die ganze Familie kommt nach Bochum. Ihr wohnt zu sechst in einem Zimmer. Alle arbeiten – auch die 7-Jährige. Aber ihr seid zusammen.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Heinrich kann nicht mehr – du schickst ihn zurück zur Mutter.",
+                consequence: "Heinrich geht zurück, gebrochen. Du arbeitest allein weiter, getrieben von Schuldgefühlen. Du wirst härter, verbitterter.",
+                next: "question4_alone_guilt"
+            },
+            {
+                text: "Ihr sucht Trost und Verständnis beim Knappverein.",
+                consequence: "Dort treffen ihr andere mit ähnlichen Geschichten. Ihr seid nicht allein. Die Schuld wird zum Zorn – Zorn auf das System.",
+                next: "question4_knappverein"
+            }
+        ]
+    },
+    
     question4_knappverein: {
         title: "Sommer 1877 – Der Lohnkampf",
         situation: `Du bist jetzt Mitglied im Knappverein. Die Konjunktur erholt sich, die Zeche macht Profite.  Aber im Juli 1877 kürzt die Direktion die Löhne um 1 Silbergroschen – angeblich wegen "schwieriger Flöze".  Gleichzeitig verlängert sie die Schicht auf 11 Stunden. Ein alter Hauer namens August Siegel sagt: "Wenn wir alle zusammenhalten, müssen sie nachgeben!" Andere warnen:  "Sie holen die Polizei!"`,
@@ -170,6 +332,141 @@ const storyTree = {
         ]
     },
     
+    question4_alone_guilt: {
+        title: "Sommer 1875 – Leben mit der Schuld",
+        situation: `Du arbeitest weiter, Jahr für Jahr. Die Schuld über den Tod deiner Schwester lässt dich nicht los. Du bist jetzt 17, fühlst dich wie 40. Die anderen Bergleute reden von Streiks, von Veränderung. Du fragst dich: Wozu?`,
+        choices: [
+            {
+                text: "Du schließt dich dem Knappverein an – vielleicht gibt Kampf dem Leben Sinn.",
+                consequence: "Im Verein findest du Kameradschaft. Die gemeinsame Sache gibt dir neue Kraft. Du beginnst, nach vorne zu schauen.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du arbeitest mechanisch weiter, ohne Hoffnung.",
+                consequence: "Die Jahre vergehen. Du wirst älter, aber nicht weiser. Als 1877 der Streik kommt, stehst du teilnahmslos daneben.",
+                next: "question5_scab"
+            },
+            {
+                text: "Du versuchst zu vergessen – mit Schnaps und Spielhöllen.",
+                consequence: "Du verfällst dem Alkohol. Dein Geld fließt in die Kneipen. Du wirst zum Schatten deiner selbst.",
+                next: "ending_broken"
+            },
+            {
+                text: "Du sparst eisern und emigrierst nach Amerika.",
+                consequence: "1876 verlässt du Deutschland für immer. In Amerika versuchst du, neu anzufangen – ohne die Geister der Vergangenheit.",
+                next: "ending_america"
+            }
+        ]
+    },
+    
+    question4_brother_dead: {
+        title: "Herbst 1874 – Allein nach Heinrichs Tod",
+        situation: `Heinrich ist tot. 12 Jahre alt. Er liegt auf dem Armenfriedhof, Grab Nr. 247, ohne Stein. Du bist allein in Bochum. Die Trauer frisst dich auf. Nachts hörst du seinen Husten noch immer. Du fragst dich: Wofür das alles?`,
+        choices: [
+            {
+                text: "Du schwörst Rache an diesem System und trittst der Arbeiterbewegung bei.",
+                consequence: "Heinrichs Tod wird dein Antrieb. Du trittst dem Knappverein bei, dann der SPD. Sein Tod soll nicht umsonst gewesen sein.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du kannst nicht mehr – du gehst zurück ins Dorf zur Familie.",
+                consequence: "Auf dem Land versuchst du zu vergessen. Aber die Armut ist überall. Nach einem Jahr gehst du zurück ins Ruhrgebiet.",
+                next: "question4_alone_guilt"
+            },
+            {
+                text: "Du arbeitest weiter wie ein Automat, innerlich tot.",
+                consequence: "Die Jahre vergehen in grauer Monotonie. Du lebst, aber du lebst nicht wirklich. 1877 kommt der Streik – du bemerkst es kaum.",
+                next: "question5_scab"
+            },
+            {
+                text: "Du kannst es nicht ertragen und begehst Selbstmord.",
+                consequence: "Am 3. November 1874 erhängst du dich in der Schlafstelle. Du wirst 16 Jahre alt. Man begräbt dich neben Heinrich. Grab Nr. 248.",
+                next: "ending_forgotten"
+            }
+        ]
+    },
+    
+    question4_knappverein_saved: {
+        title: "Sommer 1876 – Ein kleiner Sieg",
+        situation: `Der Knappverein hat geholfen. Heinrich lebt, wenn auch auf dem Land. Du arbeitest allein weiter, aber mit dem Wissen: Solidarität funktioniert. Andere Bergleute fragen dich nach dem Verein. Die Bewegung wächst. 1877 steht der große Streik bevor.`,
+        choices: [
+            {
+                text: "Du wirbst aktiv neue Mitglieder für den Knappverein.",
+                consequence: "In einem Jahr gewinnst du 30 neue Mitglieder. Als der Streik kommt, seid ihr stark genug für echten Widerstand.",
+                next: "question5_organizer"
+            },
+            {
+                text: "Du bleibst Mitglied, aber passiv – zu viel Risiko.",
+                consequence: "Du zahlst Beiträge, gehst zu Treffen, aber hältst dich zurück. Als der Streik kommt, musst du dich entscheiden.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du konzentrierst dich darauf, Heinrich eine Ausbildung zu finanzieren.",
+                consequence: "Du schickst alles Geld nach Hause. Heinrich geht zur Schule. Er wird später Lehrer – ein Aufstieg. Dein Opfer war nicht umsonst.",
+                next: "ending_reformist"
+            },
+            {
+                text: "Du holst Heinrich zurück – er soll an deiner Seite kämpfen.",
+                consequence: "Heinrich kommt zurück, diesmal als Lehrling über Tage. Ihr beide werdet aktiv im Knappverein. Brüder im Kampf.",
+                next: "question4_knappverein"
+            }
+        ]
+    },
+    
+    question4_sister_injured: {
+        title: "Winter 1874 – Maries Verstümmelung",
+        situation: `Marie kam nach Hause, ohne Ohr, mit Narben auf dem Kopf. Die anderen Kinder verspotten sie. Sie kann nicht mehr in die Fabrik – niemand will ein \"entstelltes Mädchen\". Deine Mutter schreibt: \"Wir verhungern.\" Die 4 Silbergroschen fehlen.`,
+        choices: [
+            {
+                text: "Du schickst noch mehr Geld, arbeitest doppelt so viel.",
+                consequence: "Du nimmst eine zweite Arbeit an. Nach vier Monaten kollabierst du. Im Krankenhaus erfährst du: Dein Körper gibt auf.",
+                next: "ending_crippled_disease"
+            },
+            {
+                text: "Du versuchst, Marie nach Bochum zu holen – vielleicht findet sie hier Arbeit.",
+                consequence: "Marie kommt, aber findet nur Arbeit als Straßenmagd für 2 Groschen täglich. Ihr lebt zusammen in Armut, aber zusammen.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du gehst zum Knappverein und bittest um Hilfe für die Familie.",
+                consequence: "Der Verein sammelt 8 Taler für Marie. Es reicht für sechs Monate. Du lernst: Nur gemeinsam überleben wir.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du schreibst an die Fabrik und forderst Entschädigung für Marie.",
+                consequence: "Die Fabrik lacht dich aus: \"Beweis es!\" Du hast keine Dokumente, keinen Anwalt, keine Macht. Du lernst, wer in diesem System zählt.",
+                next: "question4_alone_guilt"
+            }
+        ]
+    },
+    
+    question4_sister_works: {
+        title: "Herbst 1874 – Marie in der Fabrik",
+        situation: `Marie arbeitet in Krefeld. Jeden Monat schickt sie 3 Silbergroschen nach Hause – eine 9-Jährige, 12 Stunden am Tag. Die Briefe deiner Mutter sagen: \"Marie ist tapfer.\" Aber du weißt, was das bedeutet. Ein Kind sollte nicht tapfer sein müssen.`,
+        choices: [
+            {
+                text: "Du arbeitest weiter und hoffst, dass Marie es schafft.",
+                consequence: "Marie überlebt die Fabrik. Mit 16 ist sie klein, gebeugt, aber sie lebt. Die Familie überlebt. Du hast das System besiegt – für diesmal.",
+                next: "question4_knappverein"
+            },
+            {
+                text: "Du holst Marie raus und riskierst das Verhungern der Familie.",
+                consequence: "Marie kommt zurück ins Dorf. Zwei Monate später verhungert dein jüngster Bruder. Marie weint: \"Es ist meine Schuld.\" Nichts ist richtig in dieser Welt.",
+                next: "question4_alone_guilt"
+            },
+            {
+                text: "Du versuchst, mehr zu verdienen und Marie rauszukaufen.",
+                consequence: "Du arbeitest wie besessen. Nach einem Jahr hast du genug für drei Monate ohne Maries Lohn. Sie hört auf zu arbeiten, erholt sich.",
+                next: "question4_knappverein_saved"
+            },
+            {
+                text: "Du wirst politisch – dieses System muss sich ändern.",
+                consequence: "Du trittst dem Knappverein bei. Maries Schicksal wird dein Antrieb. Kinderarbeit muss verboten werden. Du beginnst zu kämpfen.",
+                next: "question4_knappverein"
+            }
+        ]
+    },
+    
     question5_blacklisted: {
         title: "Winter 1877/78 – Ohne Arbeit",
         situation: `Du stehst auf der schwarzen Liste. Keine Zeche nimmt dich.  Du versuchst es als Tagelöhner am Hafen in Duisburg – harte Arbeit, unregelmäßig, 4-5 Silbergroschen an guten Tagen. An manchen Tagen gibt es keine Arbeit. Du hungerst.  Nachts schläfst du in einem Schuppen.  Im Dezember kommt der Frost. `,
@@ -193,6 +490,114 @@ const storyTree = {
                 text: "Du erfrierst langsam im Schuppen und gibst auf.",
                 consequence: "Am 14. Januar 1878 findest ein Hafenarbeiter deine Leiche im Schuppen. Du wirst 19 Jahre alt. Ein namenloses Grab auf dem Armenfriedhof.",
                 next: "ending_frozen"
+            }
+        ]
+    },
+    
+    question5_scab: {
+        title: "Winter 1877/78 – Der Streikbrecher",
+        situation: `Du hast während des Streiks gearbeitet. Die anderen Bergleute meiden dich. Jemand hat \"Verräter\" an deine Tür geschmiert. In der Kneipe dreht man dir den Rücken zu. Du hast Arbeit, aber du bist allein. Ganz allein.`,
+        choices: [
+            {
+                text: "Du versuchst, dich zu rechtfertigen – du hattest keine Wahl.",
+                consequence: "Niemand will es hören. \"Jeder hatte eine Wahl\", sagen sie. Du bleibst isoliert. Die Jahre vergehen in Einsamkeit.",
+                next: "ending_broken"
+            },
+            {
+                text: "Du verlässt Bochum und suchst Arbeit woanders.",
+                consequence: "In Essen kennt niemand deine Geschichte. Du findest Arbeit, beginnst neu. Aber das Gefühl der Schuld bleibt.",
+                next: "question6_new_job"
+            },
+            {
+                text: "Du wendest dich an den Werkschutz – die nehmen jeden.",
+                consequence: "Der Werkschutz nimmt dich. Jetzt bewachst du die Zeche gegen Streikende. Du bist endgültig auf der anderen Seite.",
+                next: "ending_traitor"
+            },
+            {
+                text: "Du versuchst, dich zu rehabilitieren – du trittst heimlich dem Knappverein bei.",
+                consequence: "Der Verein nimmt dich nach langem Zögern auf. Du musst deine Reue beweisen. Als 1878 das Sozialistengesetz kommt, bist du dabei.",
+                next: "question7_socialist"
+            }
+        ]
+    },
+    
+    question5_coward: {
+        title: "Winter 1877/78 – Der Feigling",
+        situation: `Du hast dich an den Steiger gewandt, um Gnade gebettelt. Beide Seiten verachten dich. Die Streikenden nennen dich Feigling, die Zeche traut dir nicht. Du bist nirgendwo willkommen. Die Scham frisst dich auf.`,
+        choices: [
+            {
+                text: "Du versuchst, durch harte Arbeit Respekt zurückzugewinnen.",
+                consequence: "Du arbeitest doppelt so hart. Nach einem Jahr respektieren dich einige wieder. Aber du vergisst die Demütigung nie.",
+                next: "question6_new_job"
+            },
+            {
+                text: "Du verlässt das Ruhrgebiet – hier ist dein Name verbrannt.",
+                consequence: "Du gehst nach Schlesien zurück. Dort findest du Arbeit in einem Stahlwerk. Niemand kennt deine Geschichte.",
+                next: "question6_new_job"
+            },
+            {
+                text: "Die Scham ist zu groß – du greifst zur Flasche.",
+                consequence: "Der Alkohol wird dein Fluchtweg. Du verfällst immer tiefer. Dein Leben zerfällt.",
+                next: "ending_broken"
+            },
+            {
+                text: "Du versuchst, beim nächsten Mal mutiger zu sein – du trittst dem Knappverein bei.",
+                consequence: "Der Verein gibt dir eine zweite Chance. Als 1878 das Sozialistengesetz kommt, stehst du auf der richtigen Seite.",
+                next: "question7_socialist"
+            }
+        ]
+    },
+    
+    question5_organizer: {
+        title: "Winter 1877/78 – Der Organisator",
+        situation: `Der Streik war ein Teilerfolg. Die 9,5-Stunden-Schicht ist ein Anfang. Du wirst respektiert als einer, der im Hintergrund alles organisiert hat. Der Knappverein wächst. Aber die Obrigkeit beobachtet euch. 1878 kommt das Sozialistengesetz.`,
+        choices: [
+            {
+                text: "Du gehst in den Untergrund – der Kampf geht weiter, egal was kommt.",
+                consequence: "Du organisierst heimliche Treffen, Solidarkassen, Flugblätter. Das Risiko ist hoch, aber die Sache ist gerecht.",
+                next: "question7_socialist"
+            },
+            {
+                text: "Du konzentrierst dich auf legale Gewerkschaftsarbeit.",
+                consequence: "Du arbeitest innerhalb des Systems. Langsame Fortschritte, aber sicherer. Krankenkassen, Bildungsvereine.",
+                next: "ending_reformist"
+            },
+            {
+                text: "Du emigrierst – in Amerika gibt es bessere Chancen.",
+                consequence: "Mit deiner Erfahrung findest du schnell Arbeit in der US-Gewerkschaftsbewegung. Du kämpfst weiter, nur woanders.",
+                next: "ending_america"
+            },
+            {
+                text: "Du bleibst aktiv, aber vorsichtiger – Familiengründung geht vor.",
+                consequence: "Du heiratest, bekommst Kinder. Der Kampf tritt in den Hintergrund. Du sorgst für die Familie.",
+                next: "ending_reformist"
+            }
+        ]
+    },
+    
+    question6_new_job: {
+        title: "Frühjahr 1879 – Neuanfang in Westfalen",
+        situation: `Du arbeitest jetzt in einer kleinen Zeche bei Dortmund. Niemand kennt deine Vergangenheit. Der Lohn ist schlecht (6 Silbergroschen), die Arbeit hart, aber du bist frei von der schwarzen Liste. Das Sozialistengesetz ist in Kraft – überall Razzien.`,
+        choices: [
+            {
+                text: "Du hältst den Kopf unten und arbeitest einfach weiter.",
+                consequence: "Du überlebst, Jahr für Jahr. Kein Held, kein Verräter, nur ein Arbeiter. Du stirbst 1903 an Staublunge, 45 Jahre alt.",
+                next: "ending_forgotten"
+            },
+            {
+                text: "Du kontaktierst heimlich den Untergrund-Knappverein.",
+                consequence: "Du schließt dich der illegalen Arbeiterbewegung an. Trotz Sozialistengesetz kämpft ihr weiter.",
+                next: "question7_socialist"
+            },
+            {
+                text: "Du sparst und versuchst, ein kleines Geschäft zu eröffnen.",
+                consequence: "Nach fünf Jahren hast du genug für einen kleinen Laden. Du steigst auf aus der Arbeiterklasse – aber vergisst nie, woher du kommst.",
+                next: "ending_reformist"
+            },
+            {
+                text: "Du emigrierst doch noch nach Amerika.",
+                consequence: "1881 verlässt du Deutschland. In Pittsburgh arbeitest du wieder im Bergbau, aber mit mehr Chancen.",
+                next: "ending_america"
             }
         ]
     },
@@ -395,6 +800,18 @@ const storyTree = {
         title: "Ende – Betrogen und verloren",
         text: `Heinrich stirbt im April 1874 an der vergifteten \"Medizin\" des Quacksalbers. Er wird 12 Jahre alt. Du bist zerstört. Du arbeitest weiter, aber ohne Sinn. 1878 stirbst du bei einem Grubenunglück – ein Stollen stürzt ein. Du wirst 20 Jahre alt. Dein Leben zeigt: Die Armut machte Menschen anfällig für Betrüger. Ohne Geld für echte Ärzte starben Arbeiter an Scharlatanen.`,
         isDeath: true
+    },
+    
+    ending_coward_final: {
+        title: "Ende – Sicherheit um jeden Preis",
+        text: `Du hast dich 1889 zurückgezogen, als es darauf ankam. Der Streik brachte Verbesserungen – ohne dich. Du lebst weiter in Sicherheit, arbeitest bis 1910. Deine Kinder profitieren von den Errungenschaften, die andere erkämpft haben. Du stirbst 1915 im Alter von 57 Jahren in deinem Bett. Aber bis zum letzten Atemzug fragst du dich: Was wäre gewesen, wenn du mutiger gewesen wärst? Dein Leben zeigt: Manchmal ist Überleben genug. Aber manchmal genügt es nicht.`,
+        isDeath: false
+    },
+    
+    ending_crippled_disease: {
+        title: "Ende – Der Körper gibt auf",
+        text: `Dein Körper kann nicht mehr. Chronische Mangelernährung, Überarbeitung, die Jahre unter Tage. Im Frühjahr 1875 kollabierst du endgültig. Du wirst ins städtische Krankenhaus eingeliefert. Die Diagnose: Tuberkulose, fortgeschritten. Du stirbst am 7. Juli 1875 im Alter von 17 Jahren. Deine Familie erhält keine Unterstützung. Dein Leben zeigt: Der Körper war das Kapital des Arbeiters – verbraucht er sich, gibt es keine Hilfe.`,
+        isDeath: true
     }
 };
 
@@ -411,13 +828,13 @@ function initGame() {
 function displayNode(nodeId) {
     const node = storyTree[nodeId];
     
-    if (! node) {
+    if (!node) {
         console.error('Node nicht gefunden:', nodeId);
         return;
     }
     
     // Prüfen ob Ende
-    if (nodeId. startsWith('ending_')) {
+    if (nodeId.startsWith('ending_')) {
         showEnding(node);
         return;
     }
@@ -428,14 +845,14 @@ function displayNode(nodeId) {
     
     // Choices anzeigen
     const choicesContainer = document.getElementById('choices-container');
-    choicesContainer. innerHTML = '';
+    choicesContainer.innerHTML = '';
     
     const letters = ['A', 'B', 'C', 'D'];
     node.choices.forEach((choice, index) => {
         const button = document.createElement('button');
         button.className = 'choice-button';
         button.setAttribute('data-letter', letters[index] + ')');
-        button.textContent = choice. text;
+        button.textContent = choice.text;
         button.onclick = () => makeChoice(choice);
         choicesContainer.appendChild(button);
     });
