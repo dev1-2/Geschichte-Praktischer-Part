@@ -131,7 +131,7 @@ const storyTree = {
                 next: "question4_alone_guilt"
             },
             {
-                text: "Du gehst zu den Treffen des Knapppvereins, wo über Widerstand geredet wird.",
+                text: "Du gehst zu den Treffen des Knappvereins, wo über Widerstand geredet wird.",
                 consequence: "Im Knappverein lernst du: Die Krise trifft nicht alle gleich. Die Zechenbesitzer machen noch immer Profit. Du beginnst zu verstehen.",
                 next: "question4_knappverein"
             },
