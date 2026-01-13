@@ -575,3 +575,291 @@ function generateQuestion8() {
     };
 }
 
+// ===== ENDINGS CALCULATION =====
+function calculateEnding() {
+    const state = gameState;
+    const path = decisionPath;
+    
+    // Death endings basierend auf health
+    if (state.health <= 0) {
+        // Arbeitsunfall
+        if (state.workAccident) {
+            return {
+                title: "Ende – Zum Krüppel gemacht",
+                text: `Nach der Amputation deines Beins ${1874 + (state.year - 1874)} kannst du nicht mehr unter Tage arbeiten. Du bettelst auf den Straßen Bochums. Die Zeche zahlte keine Entschädigung – "eigenes Verschulden durch Übermüdung". Du stirbst ${1874 + 13} an Unterernährung, ${state.age + (state.year - 1872) + 13} Jahre alt. Dein Leben zeigt die Brutalität der frühen Industrialisierung: Menschen als Verbrauchsmaterial, weggeworfen nach dem Unfall.`,
+                isDeath: true
+            };
+        }
+        
+        // Fluchtversuch erschossen
+        if (state.inPrison && path[5] === 2) {
+            return {
+                title: "Ende – Auf der Flucht erschossen",
+                text: `Am 23. März 1879 fällt deine Leiche von der Zuchthausmauer. Du wirst 20 Jahre alt. Der Wachmann wird befördert. Dein Name erscheint in keiner Statistik. Ein namenloses Grab hinter dem Zuchthaus. Dein Leben zeigt die Gewalt des Systems: Gefängnisse, Polizei, Militär – alle Macht lag beim Staat und den Besitzenden.`,
+                isDeath: true
+            };
+        }
+        
+        // Erfroren
+        if (path[4] === 3) {
+            return {
+                title: "Ende – Erfroren und vergessen",
+                text: `Du stirbst im Winter 1878 im Alter von 19 Jahren in einem Hafenschuppen in Duisburg. Niemand kennt deinen Namen. Du wirst in einem Massengrab auf dem Armenfriedhof verscharrt. Tausende teilten dein Schicksal – junge Menschen, die vom Land in die Städte kamen, von der Industrialisierung verschlungen und vergessen wurden. Die soziale Frage blieb unbeantwortet. Für dich kam jede Hilfe zu spät.`,
+                isDeath: true
+            };
+        }
+        
+        // Bruder vergiftet
+        if (path[2] === 3 && path[0] === 2) {
+            return {
+                title: "Ende – Betrogen und verloren",
+                text: `Heinrich stirbt im April 1874 an der vergifteten "Medizin" des Quacksalbers. Er wird 12 Jahre alt. Du bist zerstört von Schuld. Du arbeitest weiter, aber ohne Sinn. 1878 stirbst du bei einem Grubenunglück – ein Stollen stürzt ein. Du wirst 20 Jahre alt. Dein Leben zeigt: Die Armut machte Menschen anfällig für Betrüger. Ohne Geld für echte Ärzte starben Arbeiter an Scharlatanen.`,
+                isDeath: true
+            };
+        }
+        
+        // Alkoholtod
+        if (path[2] === 2 && state.inDebt) {
+            return {
+                title: "Ende – Im Alkohol ertrunken",
+                text: `Im Herbst 1873 bricht deine Leber zusammen. Du stirbst mit 15 Jahren in der Schlafstelle, umgeben von leeren Schnapsflaschen. Der Schnapsverkäufer nimmt deine Jacke als letzte Zahlung. Dein Leben zeigt: Die Verzweiflung trieb viele in die Sucht. Der Alkohol war Flucht und Falle zugleich.`,
+                isDeath: true
+            };
+        }
+        
+        // Allgemeiner Tod
+        return {
+            title: "Ende – Vergessen",
+            text: `Du stirbst jung, ausgelaugt von harter Arbeit, Hunger und Krankheit im Jahr ${state.year + 2}, ${state.age + (state.year - 1872) + 2} Jahre alt. Eines von Tausenden namenlosen Opfern der Industrialisierung. Die soziale Frage blieb für dich unbeantwortet. Du wirst in einem Massengrab verscharrt.`,
+            isDeath: true
+        };
+    }
+    
+    // POSITIVE ENDINGS
+    
+    // Rädelsführer - An der Spitze beim großen Streik
+    if (path[7] === 0 && (state.isOrganizer || state.reputation > 40)) {
+        return {
+            title: "Ende – Der Rädelsführer",
+            text: `Du verbringst drei Jahre im Zuchthaus (1889-1892) wegen deiner Rolle beim großen Streik. Nach der Entlassung feiert dich die Arbeiterbewegung als Helden. Du wirst 1893 SPD-Reichstagsabgeordneter für den Wahlkreis Bochum. 1918 erlebst du die Revolution, die Abdankung des Kaisers. Im Alter erzählst du deinen Enkeln von den Kämpfen der 1870er und 1880er Jahre – von Hunger, Repression, aber auch von Solidarität und Siegen. Du stirbst 1923, 65 Jahre alt, in Würde. Dein Leben zeigt: Organisierter Widerstand kann die Welt verändern.`,
+            isDeath: false
+        };
+    }
+    
+    // Stiller Organisator - Im Hintergrund aber effektiv
+    if (path[7] === 1 && state.politicalAwareness > 50) {
+        return {
+            title: "Ende – Der stille Organisator",
+            text: `Du wirst nie verhaftet, stehst nie im Rampenlicht. Aber du bist das Rückgrat der Bewegung: Streikkassen, Bildungsabende, Krankenkassen, heimliche Flugblätter. 1890 fällt das Sozialistengesetz. Die SPD wird legal. Du wirst Gewerkschaftsführer, organisierst Tausende. 1912 wird die SPD stärkste Partei im Reichstag. Du stirbst 1920 im Alter von 62 Jahren. Bei deiner Beerdigung kommen 5.000 Menschen. Dein Leben zeigt: Revolutionen brauchen nicht nur Redner, sondern vor allem Organisatoren.`,
+            isDeath: false
+        };
+    }
+    
+    // Ungebrochen - SPD-Mitglied mit hoher Reputation
+    if (state.hasJoinedSPD && state.reputation > 40) {
+        return {
+            title: "Ende – Ungebrochen",
+            text: `Nach fünf Jahren im Untergrund (1878-1883) und mehreren Verhaftungen wirst du hart, aber ungebrochen. Du hast niemanden verraten, bist den Prinzipien treu geblieben. 1890 fällt das Sozialistengesetz. Du arbeitest als Gewerkschaftsorganisator, prägst die Arbeiterbewegung bis ins 20. Jahrhundert. 1918 erlebst du die Revolution. Du stirbst 1928 im Alter von 70 Jahren, umgeben von drei Generationen von Arbeitern, die du inspiriert hast. Dein Leben zeigt: Solidarität und Prinzipientreue können Systeme überdauern.`,
+            isDeath: false
+        };
+    }
+    
+    // Gewerkschaftsführer
+    if (state.isOrganizer && state.hasJoinedUnion && state.politicalAwareness > 45) {
+        return {
+            title: "Ende – Der Gewerkschafter",
+            text: `Du widmest dein Leben dem Aufbau starker Gewerkschaften. 1890 fällt das Sozialistengesetz, 1892 gründest du mit anderen den Bergarbeiterverband. Du verhandelst Tarifverträge, organisierst Streiks, baust Solidarkassen auf. 1906 sind 500.000 Bergarbeiter organisiert – auch dein Verdienst. Du stirbst 1919, 61 Jahre alt. Die Bewegung trägt dich auf Händen. Dein Leben zeigt: Geduldige Organisation bringt dauerhafte Erfolge.`,
+            isDeath: false
+        };
+    }
+    
+    // NEGATIVE ENDINGS
+    
+    // Verräter - Streikbrecher mit schlechter Reputation
+    if (state.isStreikbrecher && state.reputation < -10) {
+        return {
+            title: "Ende – Der Verräter",
+            text: `Du hast 1877 als Streikbrecher gearbeitet. Die Arbeiterbewegung verstößt dich. Niemand spricht mehr mit dir. Du findest Arbeit als Werkschutz – jetzt bewachst du die Zeche gegen Streikende. Die anderen Arbeiter hassen dich. Einer spuckt vor dir aus. Du trinkst dich zu Tode, stirbst 1897 an Leberzirrhose, 39 Jahre alt, allein und verachtet. Dein Leben zeigt: Verrat zerstört nicht nur andere, sondern vor allem einen selbst.`,
+            isDeath: true
+        };
+    }
+    
+    // Gebrochen - Gefängnis ohne Politisierung
+    if (state.inPrison && state.politicalAwareness < 20) {
+        return {
+            title: "Ende – Gebrochen",
+            text: `18 Monate Zuchthaus (1878-1879) haben dich zerstört. Du bist vorbestraft UND auf der schwarzen Liste. Keine Zeche nimmt dich. Du lebst von Gelegenheitsarbeiten, Betteln, manchmal Diebstahl. 1883 wirst du wieder verhaftet – Vagabundage. Weitere 12 Monate. Du stirbst 1885 in einer Armenunterkunft an Typhus, 27 Jahre alt. Dein Leben zeigt: Der Staat und die Industrie brachen systematisch jeden Widerstand. Viele überlebten das nicht.`,
+            isDeath: true
+        };
+    }
+    
+    // Vergessen - Niedriges politisches Bewusstsein
+    if (state.politicalAwareness < 10 && !state.hasJoinedUnion) {
+        return {
+            title: "Ende – Vergessen",
+            text: `Du stirbst 1891 an Lungentuberkulose, 33 Jahre alt. Die Arbeiterbewegung zieht an dir vorbei. Du warst zu erschöpft, zu gebrochen. Ein namenloses Grab, keine Familie, keine Genossen. Dein Leben zeigt die andere Seite: Nicht alle konnten kämpfen. Viele wurden von der Industrialisierung einfach zermalmt, vergessen von der Geschichte. Auch ihr Schicksal gehört zur sozialen Frage.`,
+            isDeath: true
+        };
+    }
+    
+    // NEUTRALE ENDINGS
+    
+    // Zur See - Hamburg Emigration
+    if (state.location === 'Hamburg' && path[4] === 0) {
+        return {
+            title: "Ende – Zur See",
+            text: `Du arbeitest als Matrose auf Handelsschiffen. Die Arbeit ist hart, aber du siehst die Welt: Hamburg, London, New York, Kalkutta. 1885 heuerst du auf einem Walfänger an. Du überlebst, kehrst nie nach Deutschland zurück. 1902 lässt du dich in Liverpool nieder, heiratest eine Irin. Du stirbst 1915 im Alter von 57 Jahren. Dein Leben zeigt: Manche entkamen der Industriehölle durch Flucht. Aber Millionen hatten diese Option nicht.`,
+            isDeath: false
+        };
+    }
+    
+    // Reformer - Union-Mitglied, moderates Bewusstsein
+    if (state.hasJoinedUnion && state.politicalAwareness >= 20 && state.politicalAwareness < 45) {
+        return {
+            title: "Ende – Der Reformer",
+            text: `Du arbeitest jahrzehntelang in der Gewerkschaft, organisierst Krankenkassen, Bildungsvereine, legale Streiks. 1883 kommen Bismarcks Sozialgesetze: Krankenversicherung, später Unfallversicherung. Kleine Siege. 1890 fällt das Sozialistengesetz. Die Bewegung wächst legal. Du wirst nie berühmt, aber du verbesserst das Leben Tausender. Du stirbst 1918 im Alter von 60 Jahren, drei Wochen vor der Revolution. Dein Leben zeigt: Auch kleine, geduldige Schritte können Systeme verändern. Reform UND Revolution waren nötig.`,
+            isDeath: false
+        };
+    }
+    
+    // Default - Einfacher Überlebender
+    if (state.politicalAwareness >= 10) {
+        return {
+            title: "Ende – Der Überlebende",
+            text: `Du hast überlebt. Das ist mehr als viele sagen können. Du arbeitest bis ins hohe Alter als einfacher Bergmann, erlebst kleine Verbesserungen: kürzere Arbeitszeiten, etwas höhere Löhne, Sozialversicherungen. 1918 siehst du die Revolution, die Abdankung des Kaisers. Du stirbst 1925 in bescheidenen Verhältnissen, aber in Würde. Dein Leben zeigt: Nicht jeder konnte Held sein. Aber auch die stillen Überlebenden trugen die Bewegung.`,
+            isDeath: false
+        };
+    }
+    
+    // Fallback
+    return {
+        title: "Ende – Ein Arbeiterleben",
+        text: `Du stirbst ${state.year + 10}, ${state.age + (state.year - 1872) + 10} Jahre alt. Ein Leben geprägt von harter Arbeit, Entbehrungen, aber auch kleinen Momenten der Solidarität. Du warst einer von Millionen. Dein Leben zeigt: Die Industrialisierung schuf Reichtum für wenige, Elend für viele. Aber sie schuf auch die Arbeiterbewegung – den Kampf für Gerechtigkeit.`,
+        isDeath: false
+    };
+}
+
+// ===== CORE GAME FUNCTIONS =====
+function initGame() {
+    // Reset state
+    gameState = {
+        age: 14,
+        year: 1872,
+        location: 'Breslau',
+        hasBrother: false,
+        brotherAlive: false,
+        brotherHealth: 0,
+        familyAlive: 4,
+        hasJob: false,
+        jobType: '',
+        money: 0,
+        wages: 0,
+        health: 100,
+        injuryLevel: 0,
+        isSick: false,
+        hasJoinedUnion: false,
+        hasJoinedSPD: false,
+        politicalAwareness: 0,
+        reputation: 0,
+        inPrison: false,
+        isBlacklisted: false,
+        inDebt: false,
+        hasEducation: false,
+        sisterInjured: false,
+        workAccident: false,
+        helpedByUnion: false,
+        isStreikbrecher: false,
+        isOrganizer: false
+    };
+    
+    decisionPath = [];
+    currentQuestion = 0;
+    
+    updateDisplay();
+    displayQuestion();
+}
+
+function displayQuestion() {
+    // Check for death
+    if (gameState.health <= 0) {
+        showEnding(calculateEnding());
+        return;
+    }
+    
+    // Check if we reached the end
+    if (currentQuestion >= 8) {
+        showEnding(calculateEnding());
+        return;
+    }
+    
+    // Generate current question
+    const questionData = questionGenerators[currentQuestion]();
+    
+    // Update UI
+    document.getElementById('question-title').textContent = questionData.title;
+    document.getElementById('situation-text').textContent = questionData.situation;
+    
+    // Create choice buttons
+    const choicesContainer = document.getElementById('choices-container');
+    choicesContainer.innerHTML = '';
+    
+    const letters = ['A', 'B', 'C', 'D'];
+    questionData.choices.forEach((choice, index) => {
+        const button = document.createElement('button');
+        button.className = 'choice-button';
+        button.setAttribute('data-letter', letters[index] + ')');
+        button.textContent = choice.text;
+        button.onclick = () => makeChoice(index, choice);
+        choicesContainer.appendChild(button);
+    });
+    
+    // Show/hide sections
+    document.getElementById('story-section').style.display = 'block';
+    document.getElementById('choices-section').style.display = 'block';
+    document.getElementById('consequence-section').style.display = 'none';
+    document.getElementById('ending-section').style.display = 'none';
+    
+    updateDisplay();
+}
+
+function makeChoice(choiceIndex, choice) {
+    // Add to decision path
+    decisionPath.push(choiceIndex);
+    
+    // Apply effects
+    applyEffects(choice.effects);
+    
+    // Show consequence
+    document.getElementById('consequence-text').textContent = choice.consequence;
+    document.getElementById('consequence-section').style.display = 'block';
+    document.getElementById('choices-section').style.display = 'none';
+    
+    // Setup continue button
+    document.getElementById('continue-btn').onclick = () => {
+        currentQuestion++;
+        displayQuestion();
+    };
+}
+
+function showEnding(ending) {
+    document.getElementById('ending-title').textContent = ending.title;
+    document.getElementById('ending-text').textContent = ending.text;
+    
+    const endingBox = document.querySelector('.ending-box');
+    if (ending.isDeath) {
+        endingBox.classList.add('death-ending');
+    } else {
+        endingBox.classList.remove('death-ending');
+    }
+    
+    document.getElementById('story-section').style.display = 'none';
+    document.getElementById('choices-section').style.display = 'none';
+    document.getElementById('consequence-section').style.display = 'none';
+    document.getElementById('ending-section').style.display = 'block';
+    
+    document.getElementById('restart-btn').onclick = initGame;
+}
+
+// ===== START GAME ON PAGE LOAD =====
+document.addEventListener('DOMContentLoaded', initGame);
+
