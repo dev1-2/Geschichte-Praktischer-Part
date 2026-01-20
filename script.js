@@ -245,7 +245,7 @@ function generateQuestion3() {
             }
         ];
     } else if (hasBrother && gameState.brotherHealth < 70) {
-        situation = `Heinrich hustet jede Nacht schwarz. Kohlenstaub. Er ist erst ${11 + (gameState.year - 1872)}, aber seine Lunge ist schon geschädigt. Der Zechenarzt sagt: "Ist halt so. Kann weiterarbeiten." Aber du siehst, dass Heinrich immer schwächer wird. Nachts weint er vor Schmerzen.`;
+        situation = `Heinrich hustet jede Nacht schwarz. Kohlenstaub. Er ist erst ${11 + (gameState.year - 1872)} Jahre, aber seine Lunge ist schon geschädigt. Der Zechenarzt sagt: "Ist halt so. Kann weiterarbeiten." Aber du siehst, dass Heinrich immer schwächer wird. Nachts weint er vor Schmerzen.`;
         choices = [
             {
                 text: "Du lässt Heinrich weiterarbeiten – ihr braucht das Geld.",
@@ -269,7 +269,7 @@ function generateQuestion3() {
             }
         ];
     } else {
-        situation = `Du bist jetzt ${gameState.age + (gameState.year - 1872)} Jahre alt. Deine Mutter schreibt (der Dorfschullehrer schreibt für sie): Deine 9-jährige Schwester Marie soll in eine Seidenfabrik in Krefeld, 12 Stunden am Spulrad, 4 Silbergroschen am Tag. "Besser als verhungern", schreibt die Mutter. Du weißt: Mädchen verlieren in den Fabriken oft Finger, wenn sie müde werden.`;
+        situation = `Du bist jetzt ${14 + (gameState.year - 1872)} Jahre alt. Deine Mutter schreibt (der Dorfschullehrer schreibt für sie): Deine 9-jährige Schwester Marie soll in eine Seidenfabrik in Krefeld, 12 Stunden am Spulrad, 4 Silbergroschen am Tag. "Besser als verhungern", schreibt die Mutter. Du weißt: Mädchen verlieren in den Fabriken oft Finger, wenn sie müde werden.`;
         choices = [
             {
                 text: "Du erlaubst es – ohne Maries Lohn stirbt die Familie.",
@@ -307,7 +307,7 @@ function generateQuestion4() {
     const hasUnion = gameState.hasJoinedUnion;
     const awareness = gameState.politicalAwareness;
     
-    let situation = `Es ist Sommer 1877. Du bist jetzt ${gameState.age + (gameState.year - 1872)} Jahre alt. Die Konjunktur erholt sich, die Zeche macht Profite. Aber im Juli kürzt die Direktion die Löhne um 1 Silbergroschen – angeblich wegen "schwieriger Flöze". Gleichzeitig verlängert sie die Schicht auf 11 Stunden.`;
+    let situation = `Es ist Sommer 1877. Du bist jetzt ${14 + (gameState.year - 1872)} Jahre alt. Die Konjunktur erholt sich, die Zeche macht Profite. Aber im Juli kürzt die Direktion die Löhne um 1 Silbergroschen – angeblich wegen "schwieriger Flöze". Gleichzeitig verlängert sie die Schicht auf 11 Stunden.`;
     
     if (hasUnion) {
         situation += ` Ein alter Hauer namens August Siegel sagt beim Vereinstreffen: "Wenn wir alle zusammenhalten, müssen sie nachgeben!" Andere warnen: "Sie holen die Polizei!"`;
@@ -508,7 +508,7 @@ function generateQuestion7() {
     const isOrganizer = gameState.isOrganizer;
     const awareness = gameState.politicalAwareness;
     
-    let situation = `Es ist 1884. Du bist jetzt ${gameState.age + 12} Jahre alt. ${awareness > 30 ? 'Die Jahre im Untergrund haben dich geprägt. Du verstehst das System jetzt.' : 'Du hast überlebt, aber zu welchem Preis?'} Die Arbeiterbewegung wächst trotz Sozialistengesetz. ${hasSPD || hasUnion ? 'Du bist Teil davon.' : 'Du stehst am Rand.'} 1889 steht der große Bergarbeiterstreik bevor.`;
+    let situation = `Es ist 1884. Du bist jetzt ${14 + (gameState.year - 1872)} Jahre alt. ${awareness > 30 ? 'Die Jahre im Untergrund haben dich geprägt. Du verstehst das System jetzt.' : 'Du hast überlebt, aber zu welchem Preis?'} Die Arbeiterbewegung wächst trotz Sozialistengesetz. ${hasSPD || hasUnion ? 'Du bist Teil davon.' : 'Du stehst am Rand.'} 1889 steht der große Bergarbeiterstreik bevor.`;
     
     return {
         title: "Frühjahr 1884 – Klassenbewusstsein",
