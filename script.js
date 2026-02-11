@@ -1,54 +1,38 @@
 // ===== GAME STATE =====
 let gameState = {
-    // Basic info
     age: 14,
     year: 1872,
     location: 'Breslau',
-    
-    // Family
     hasBrother: false,
     brotherAlive: false,
     brotherHealth: 0,
-    familyAlive: 4, // mother + 3 siblings
-    
-    // Work & Money
+    familyAlive: 4,
     hasJob: false,
     jobType: '',
     money: 0,
     wages: 0,
-    
-    // Health & Status
     health: 100,
     injuryLevel: 0,
     isSick: false,
-    
-    // Political & Social
     hasJoinedUnion: false,
     hasJoinedSPD: false,
     politicalAwareness: 0,
     reputation: 0,
-    
-    // Flags
     inPrison: false,
     isBlacklisted: false,
     inDebt: false,
     hasEducation: false,
-    
-    // Specific events
     sisterInjured: false,
     workAccident: false,
-    
-    // Choices tracking
     helpedByUnion: false,
     isStreikbrecher: false,
     isOrganizer: false
 };
 
-// Decision path tracking - stores choice indices (0-3)
 let decisionPath = [];
 let currentQuestion = 0;
 
-// Question generators
+// Alle Frage-Generatoren-Funktionen:
 const questionGenerators = [
     generateQuestion1,
     generateQuestion2,
@@ -65,163 +49,122 @@ function updateDisplay() {
     document.getElementById('health-display').textContent = Math.max(0, Math.min(100, gameState.health));
     document.getElementById('money-display').textContent = gameState.money;
     document.getElementById('reputation-display').textContent = gameState.reputation;
-    
-    const progress = (currentQuestion / 8) * 100;
+    const progress = ((currentQuestion) / questionGenerators.length) * 100;
     document.getElementById('progress-fill').style.width = progress + '%';
-    document.getElementById('progress-text').textContent = `Frage ${currentQuestion} von 8`;
+    document.getElementById('progress-text').textContent = `Frage ${currentQuestion+1} von ${questionGenerators.length}`;
 }
-
 function applyEffects(effects) {
     for (let key in effects) {
         if (gameState.hasOwnProperty(key)) {
-            if (typeof effects[key] === 'number' && typeof gameState[key] === 'number') {
+            if (typeof effects[key] === 'number' && typeof gameState[key] === 'number')
                 gameState[key] += effects[key];
-            } else {
+            else
                 gameState[key] = effects[key];
-            }
         }
     }
     updateDisplay();
 }
+function renderQuestion(idx) {
+    updateDisplay();
+    const q = questionGenerators[idx]();
+    document.getElementById('question-title').textContent = q.title;
+    document.getElementById('situation-text').textContent = q.situation;
+    const container = document.getElementById('choices-container');
+    container.innerHTML = '';
+    q.choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-button';
+        btn.textContent = choice.text;
+        btn.onclick = () => handleChoice(i);
+        container.appendChild(btn);
+    });
+    document.getElementById('consequence-section').style.display = 'none';
+    if (document.getElementById('ending-section'))
+        document.getElementById('ending-section').style.display = 'none';
+}
+function handleChoice(choiceIdx) {
+    const q = questionGenerators[currentQuestion]();
+    const chosen = q.choices[choiceIdx];
+    decisionPath.push(choiceIdx);
+    document.getElementById('consequence-section').style.display = 'block';
+    document.getElementById('consequence-text').textContent = chosen.consequence;
+    applyEffects(chosen.effects);
+    document.getElementById('choices-container').innerHTML = '';
+    document.getElementById('continue-btn').onclick = function() {
+        document.getElementById('consequence-section').style.display = 'none';
+        currentQuestion++;
+        if (currentQuestion < questionGenerators.length) {
+            renderQuestion(currentQuestion);
+        } else {
+            showEnding();
+        }
+    };
+}
+function showEnding() {
+    document.getElementById('game-content').style.display = 'block';
+    document.getElementById('consequence-section').style.display = 'none';
+    document.getElementById('ending-section').style.display = 'block';
+    document.getElementById('ending-title').textContent = 'Spiel beendet – dein Arbeiterleben';
+    let endingText = `Du bist im Jahr ${gameState.year} angekommen.<br>`;
+    endingText += `Status: Gesundheit: ${gameState.health}, Ruf: ${gameState.reputation}, Vermögen: ${gameState.money}, politische Erfahrung: ${gameState.politicalAwareness}`;
+    if (gameState.inPrison) endingText += "<br>Du bist im Gefängnis…";
+    else if (gameState.health <= 0) endingText += "<br>Du bist gestorben.";
+    else endingText += "<br>Du hast überlebt!";
+    document.getElementById('ending-text').innerHTML = endingText;
+    document.getElementById('restart-btn').onclick = function() {
+        currentQuestion = 0;
+        Object.assign(gameState, {
+            age: 14, year: 1872, location: 'Breslau', hasBrother: false, brotherAlive: false, brotherHealth: 0, familyAlive: 4,
+            hasJob: false, jobType: '', money: 0, wages: 0, health: 100, injuryLevel: 0, isSick: false,
+            hasJoinedUnion: false, hasJoinedSPD: false, politicalAwareness: 0, reputation: 0, inPrison: false, isBlacklisted: false, inDebt: false,
+            hasEducation: false, sisterInjured: false, workAccident: false, helpedByUnion: false, isStreikbrecher: false, isOrganizer: false
+        });
+        decisionPath = [];
+        document.getElementById('ending-section').style.display = 'none';
+        renderQuestion(currentQuestion);
+    };
+}
+document.addEventListener('DOMContentLoaded', function() {
+    renderQuestion(currentQuestion);
+});
 
-// ===== QUESTION 1 (1872): Die Ausgangssituation =====
+// ====== generateQuestion1 ======
 function generateQuestion1() {
     return {
         title: "Herbst 1872 – Die Entscheidung",
-        situation: `Du bist Jakob, 14 Jahre alt, aus einem Dorf bei Breslau in Schlesien. Dein Vater ist letzten Winter gestorben. Deine Mutter arbeitet als Tagelöhnerin, aber die Löhne auf dem Land sinken seit Jahren – billiges Getreide aus Russland und Amerika macht die Bauern arm. Deine drei jüngeren Geschwister hungern. Der Dorfschmied erzählt von seinem Neffen, der im Ruhrgebiet in einer Zeche arbeitet: "12 Silbergroschen am Tag! In einer Woche mehr als hier im ganzen Monat!"`,
+        situation: `Du bist Jakob, 14 Jahre alt, aus einem Dorf bei Breslau...`,
         choices: [
-            {
-                text: "Du gehst allein nach Bochum, wo Kohlezechen Arbeiter suchen. Die Fahrt kostet fast alles, was die Familie hat.",
-                consequence: "Nach drei Tagen Fahrt im überfüllten Güterwagen erreichst du Bochum. Der Gestank der Koksöfen brennt in der Nase. Du findest Arbeit als Schlepperjunge in der Zeche \"Präsident\" – 10 Stunden unter Tage, 8 Silbergroschen am Tag.",
-                effects: {
-                    location: 'Bochum',
-                    hasJob: true,
-                    jobType: 'Schlepperjunge',
-                    money: 8,
-                    wages: 8,
-                    health: -5
-                }
-            },
-            {
-                text: "Du versuchst, beim örtlichen Großbauern als Knecht unterzukommen – Kost und Logis gegen Arbeit.",
-                consequence: "Der Bauer nimmt dich, zahlt aber nichts. Nach vier Monaten schlägt er dich, weil du \"zu langsam\" bist. Du fliehst und gehst doch noch ins Ruhrgebiet.",
-                effects: {
-                    location: 'Bochum',
-                    hasJob: true,
-                    jobType: 'Schlepperjunge',
-                    money: 5,
-                    wages: 8,
-                    health: -10,
-                    year: 1873
-                }
-            },
-            {
-                text: "Du nimmst deinen 11-jährigen Bruder Heinrich mit ins Ruhrgebiet. Zwei verdienen mehr als einer.",
-                consequence: "Ihr beide findet Arbeit in derselben Zeche. Heinrich wird \"Türjunge\" – er muss im Dunkeln sitzen und Wettertüren öffnen, 10 Stunden täglich. Zusammen verdient ihr 14 Silbergroschen.",
-                effects: {
-                    location: 'Bochum',
-                    hasJob: true,
-                    jobType: 'Schlepperjunge',
-                    hasBrother: true,
-                    brotherAlive: true,
-                    brotherHealth: 80,
-                    money: 14,
-                    wages: 14,
-                    familyAlive: 3,
-                    health: -5
-                }
-            },
-            {
-                text: "Du gehst nach Breslau zur Textilfabrik, nur einen Tagesmarsch entfernt.",
-                consequence: "In Breslau herrscht Typhus. Die Fabrik stellt niemanden ein. Du kehrst hungrig zurück und gehst schließlich doch ins Ruhrgebiet.",
-                effects: {
-                    location: 'Bochum',
-                    hasJob: true,
-                    jobType: 'Schlepperjunge',
-                    money: 6,
-                    wages: 8,
-                    health: -15,
-                    isSick: true
-                }
-            }
+            { text: "Du gehst allein nach Bochum...", consequence: "Nach drei Tagen Fahrt...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 8, wages: 8, health: -5 } },
+            { text: "Du versuchst, beim örtlichen Großbauern...", consequence: "Der Bauer nimmt dich...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 5, wages: 8, health: -10, year: 1873 } },
+            { text: "Du nimmst deinen Bruder mit...", consequence: "Ihr beide findet Arbeit...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', hasBrother: true, brotherAlive: true, brotherHealth: 80, money: 14, wages: 14, familyAlive: 3, health: -5 } },
+            { text: "Du gehst nach Breslau zur Textilfabrik...", consequence: "In Breslau herrscht Typhus...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 6, wages: 8, health: -15, isSick: true } }
         ]
     };
 }
-
-// ===== QUESTION 2 (1872/73): Umgang mit Geld/Wohnung =====
 function generateQuestion2() {
     const hasBrother = gameState.hasBrother;
     const money = gameState.money;
-    
-    let situation = `Du wohnst ${hasBrother ? 'mit deinem Bruder' : 'allein'} in einer "Schlafstelle" – ein Bett in einem Keller, das du mit ${hasBrother ? 'einem' : 'zwei'} Schichtarbeiter${hasBrother ? '' : 'n'} teilst. Jeder schläft 8 Stunden, dann kommt der nächste. Die Vermieterin, eine Witwe, verlangt ${hasBrother ? '1,5' : '1'} Silbergroschen täglich. Das Bett ist voller Wanzen, die Wände schimmeln.`;
-    
-    if (hasBrother) {
-        situation += ` Heinrich hustet nachts – die Kohlenluft macht ihn krank.`;
-    }
-    
-    situation += ` Du arbeitest in völliger Dunkelheit unter Tage, schleppst Kohlenwagen. Deine Hände sind blutig, der Rücken schmerzt ständig. Von deinen ${money} Silbergroschen bleiben nach Miete und Brot etwa ${Math.floor(money / 3)} übrig.`;
-    
+    let situation = `Du wohnst ${hasBrother ? 'mit deinem Bruder' : 'allein'} ...`;
+    if (hasBrother) situation += ` Heinrich hustet nachts...`;
+    situation += ` Du arbeitest in völliger Dunkelheit... Von deinen ${money} Silbergroschen bleiben nach Miete und Brot etwa ${Math.floor(money / 3)} übrig.`;
     return {
         title: "Winter 1872/73 – Das neue Leben",
         situation: situation,
         choices: [
-            {
-                text: "Du schickst alles nach Hause zu deiner Mutter und isst nur das Nötigste.",
-                consequence: hasBrother ? 
-                    "Deine Familie überlebt den Winter. Aber Heinrich wird immer schwächer. Im März 1873 erkrankt er an schwerem Husten – Kohlenstaub in der Lunge." :
-                    "Deine Familie überlebt den Winter. Aber du wirst immer schwächer. Im März 1873 erkrankst du an schwerem Durchfall – das Trinkwasser ist verseucht. Du verlierst 5 Tage Lohn.",
-                effects: {
-                    money: 0,
-                    health: -15,
-                    reputation: 5,
-                    year: 1873,
-                    ...(hasBrother && { brotherHealth: -20, isSick: true })
-                }
-            },
-            {
-                text: "Du kaufst dir Schnaps, wie die anderen Bergleute – es hilft gegen Kälte und Schmerz.",
-                consequence: "Du verschuldest dich beim Schnapsverkäufer. Er arbeitet mit dem Zechenbesitzer zusammen – die Schulden werden direkt vom Lohn abgezogen. Du kommst nicht mehr raus.",
-                effects: {
-                    money: -5,
-                    health: -10,
-                    inDebt: true,
-                    year: 1873,
-                    familyAlive: hasBrother ? 3 : 3
-                }
-            },
-            {
-                text: "Du sparst jeden Pfennig für bessere Kleidung – deine Jacke ist durchlöchert.",
-                consequence: "Im Februar 1873 bricht der Wiener Börsenkrach aus. Die Zeche entlässt 200 Arbeiter. Du behältst deine Stelle, aber der Lohn wird auf " + Math.floor(gameState.wages * 0.85) + " Silbergroschen gesenkt.",
-                effects: {
-                    money: Math.floor(gameState.money * 0.7),
-                    wages: Math.floor(gameState.wages * 0.85),
-                    year: 1873,
-                    politicalAwareness: 5
-                }
-            },
-            {
-                text: "Du gehst sonntagabends zur \"Keilerei\" (Kneipe), wo Bergleute sich treffen und Nachrichten austauschen.",
-                consequence: "Du hörst von anderen Zechen, von Unfällen, von einem \"Knappverein\", der kranken Bergleuten hilft. Du beginnst zu verstehen, wie das System funktioniert.",
-                effects: {
-                    money: Math.floor(gameState.money * 0.6),
-                    politicalAwareness: 15,
-                    reputation: 10,
-                    year: 1873
-                }
-            }
+            { text: "Du schickst alles nach Hause...", consequence: hasBrother ? "Deine Familie überlebt..." : "Deine Familie überlebt...", effects: { money: 0, health: -15, reputation: 5, year: 1873, ...(hasBrother && { brotherHealth: -20, isSick: true }) } },
+            { text: "Du kaufst dir Schnaps...", consequence: "Du verschuldest dich beim Schnapsverkäufer...", effects: { money: -5, health: -10, inDebt: true, year: 1873, familyAlive: hasBrother ? 3 : 3 } },
+            { text: "Du sparst jeden Pfennig...", consequence: "Im Februar 1873 bricht der Wiener Börsenkrach aus...", effects: { money: Math.floor(gameState.money * 0.7), wages: Math.floor(gameState.wages * 0.85), year: 1873, politicalAwareness: 5 } },
+            { text: "Du gehst sonntagabends zur \"Keilerei\"...", consequence: "Du hörst von anderen Zechen...", effects: { money: Math.floor(gameState.money * 0.6), politicalAwareness: 15, reputation: 10, year: 1873 } }
         ]
     };
 }
-
-// ===== QUESTION 3 (1874): Familienkrise =====
 function generateQuestion3() {
     const hasBrother = gameState.hasBrother;
     const inDebt = gameState.inDebt;
-    
     let situation, choices;
-    
+
     if (inDebt) {
-        situation = `Der Schnapsverkäufer hat dich in der Falle. Jeden Freitag nimmt er die Hälfte deines Lohns direkt an der Zeche. Du kannst nicht mehr nach Hause schicken. Deine Mutter schreibt verzweifelte Briefe. Im April stirbt dein jüngster Bruder an Hunger. Du trinkst noch mehr, um zu vergessen.`;
+        situation = "Der Schnapsverkäufer hat dich in der Falle. Jeden Freitag nimmt er die Hälfte deines Lohns direkt an der Zeche. Du kannst nicht mehr nach Hause schicken. Deine Mutter schreibt verzweifelte Briefe. Im April stirbt dein jüngster Bruder an Hunger. Du trinkst noch mehr, um zu vergessen.";
         choices = [
             {
                 text: "Du versuchst, die Schulden abzuarbeiten und nüchtern zu werden.",
@@ -259,7 +202,7 @@ function generateQuestion3() {
             },
             {
                 text: "Du gehst zum Knappverein und bittest um Hilfe.",
-                consequence: "Der Knappverein zahlt für einen Arztbesuch. Der Arzt sagt: \"Raus aus der Zeche oder er stirbt.\" Du schickst Heinrich nach Hause. Die Vereinskasse unterstützt dich mit 2 Groschen pro Woche.",
+                consequence: "Der Knappverein zahlt f��r einen Arztbesuch. Der Arzt sagt: \"Raus aus der Zeche oder er stirbt.\" Du schickst Heinrich nach Hause. Die Vereinskasse unterstützt dich mit 2 Groschen pro Woche.",
                 effects: { hasBrother: false, brotherAlive: true, hasJoinedUnion: true, money: gameState.money + 2, wages: 10, reputation: 15, politicalAwareness: 15, year: 1874, helpedByUnion: true }
             },
             {
@@ -293,7 +236,6 @@ function generateQuestion3() {
             }
         ];
     }
-    
     return {
         title: "Frühjahr 1874 – Familienkrise",
         situation: situation,
@@ -301,20 +243,15 @@ function generateQuestion3() {
     };
 }
 
-
-// ===== QUESTION 4 (1877): Der erste Streik =====
 function generateQuestion4() {
     const hasUnion = gameState.hasJoinedUnion;
     const awareness = gameState.politicalAwareness;
-    
     let situation = `Es ist Sommer 1877. Du bist jetzt ${14 + (gameState.year - 1872)} Jahre alt. Die Konjunktur erholt sich, die Zeche macht Profite. Aber im Juli kürzt die Direktion die Löhne um 1 Silbergroschen – angeblich wegen "schwieriger Flöze". Gleichzeitig verlängert sie die Schicht auf 11 Stunden.`;
-    
     if (hasUnion) {
         situation += ` Ein alter Hauer namens August Siegel sagt beim Vereinstreffen: "Wenn wir alle zusammenhalten, müssen sie nachgeben!" Andere warnen: "Sie holen die Polizei!"`;
     } else {
         situation += ` Die anderen Bergleute murren. Einige reden von Streik. Aber du stehst abseits – du bist nicht organisiert.`;
     }
-    
     return {
         title: "Sommer 1877 – Der Lohnkampf",
         situation: situation,
@@ -343,14 +280,11 @@ function generateQuestion4() {
     };
 }
 
-// ===== QUESTION 5 (1877/78): Krankheit =====
 function generateQuestion5() {
     const blacklisted = gameState.isBlacklisted;
     const streikbrecher = gameState.isStreikbrecher;
     const hasUnion = gameState.hasJoinedUnion;
-    
     let situation, choices;
-    
     if (blacklisted) {
         situation = `Du stehst auf der schwarzen Liste. Keine Zeche nimmt dich. Du versuchst es als Tagelöhner am Hafen in Duisburg – harte Arbeit, unregelmäßig, 4-5 Silbergroschen an guten Tagen. An manchen Tagen gibt es keine Arbeit. Du hungerst. Nachts schläfst du in einem Schuppen. Im Dezember kommt der Frost.`;
         choices = [
@@ -414,9 +348,7 @@ function generateQuestion5() {
             },
             {
                 text: hasUnion ? "Du gehst zur Krankenkasse des Knappvereins." : "Du suchst Hilfe beim Knappverein.",
-                consequence: hasUnion ? 
-                    "Die Kasse zahlt für einen richtigen Arzt und gibt dir 6 Wochen Krankengeld. Du erholst dich etwas. Das System funktioniert." :
-                    "Der Verein nimmt dich auf und hilft dir. Die Kasse zahlt für Behandlung. Du lernst: Nur gemeinsam überleben wir.",
+                consequence: hasUnion ? "Die Kasse zahlt für einen richtigen Arzt und gibt dir 6 Wochen Krankengeld. Du erholst dich etwas. Das System funktioniert." : "Der Verein nimmt dich auf und hilft dir. Die Kasse zahlt für Behandlung. Du lernst: Nur gemeinsam überleben wir.",
                 effects: { hasJoinedUnion: true, health: 5, reputation: 15, politicalAwareness: 20, year: 1878 }
             },
             {
@@ -426,7 +358,6 @@ function generateQuestion5() {
             }
         ];
     }
-    
     return {
         title: "Winter 1877/78 – Krankheit und Krise",
         situation: situation,
@@ -434,14 +365,11 @@ function generateQuestion5() {
     };
 }
 
-// ===== QUESTION 6 (1878): Sozialistengesetz =====
 function generateQuestion6() {
     const hasUnion = gameState.hasJoinedUnion;
     const inPrison = gameState.inPrison;
     const awareness = gameState.politicalAwareness;
-    
     let situation, choices;
-    
     if (inPrison) {
         situation = `Das Zuchthaus Bochum ist die Hölle. 14 Stunden täglich Steineklopfen. Schläge bei jedem Verstoß. Das Essen ist verrottet. Aber hier triffst du andere: Sozialdemokraten, Gewerkschafter, Männer, die beim Streik verhaftet wurden. Ein Mann erzählt dir von Marx, von der Arbeiterbewegung, vom Klassenkampf.`;
         choices = [
@@ -471,9 +399,7 @@ function generateQuestion6() {
         choices = [
             {
                 text: "Du gehst zu den geheimen Treffen – trotz des Risikos.",
-                consequence: hasUnion ? 
-                    "Ihr organisiert euch im Untergrund. Über Monate baut ihr ein Netzwerk auf. Flugblätter, geheime Kassen, Solidarität. Das Risiko ist hoch, aber die Sache ist gerecht." :
-                    "Du schließt dich der verbotenen Bewegung an. Es ist gefährlich, aber du fühlst dich zum ersten Mal Teil von etwas Größerem.",
+                consequence: hasUnion ? "Ihr organisiert euch im Untergrund. Über Monate baut ihr ein Netzwerk auf. Flugblätter, geheime Kassen, Solidarität. Das Risiko ist hoch, aber die Sache ist gerecht." : "Du schließt dich der verbotenen Bewegung an. Es ist gefährlich, aber du fühlst dich zum ersten Mal Teil von etwas Größerem.",
                 effects: { hasJoinedSPD: true, hasJoinedUnion: true, politicalAwareness: 40, reputation: 25, year: 1878 }
             },
             {
@@ -493,7 +419,6 @@ function generateQuestion6() {
             }
         ];
     }
-    
     return {
         title: "Herbst 1878 – Das Sozialistengesetz",
         situation: situation,
@@ -501,15 +426,12 @@ function generateQuestion6() {
     };
 }
 
-// ===== QUESTION 7 (1884): Klassenbewusstsein =====
 function generateQuestion7() {
     const hasSPD = gameState.hasJoinedSPD;
     const hasUnion = gameState.hasJoinedUnion;
     const isOrganizer = gameState.isOrganizer;
     const awareness = gameState.politicalAwareness;
-    
     let situation = `Es ist 1884. Du bist jetzt ${14 + (gameState.year - 1872)} Jahre alt. ${awareness > 30 ? 'Die Jahre im Untergrund haben dich geprägt. Du verstehst das System jetzt.' : 'Du hast überlebt, aber zu welchem Preis?'} Die Arbeiterbewegung wächst trotz Sozialistengesetz. ${hasSPD || hasUnion ? 'Du bist Teil davon.' : 'Du stehst am Rand.'} 1889 steht der große Bergarbeiterstreik bevor.`;
-    
     return {
         title: "Frühjahr 1884 – Klassenbewusstsein",
         situation: situation,
@@ -538,15 +460,12 @@ function generateQuestion7() {
     };
 }
 
-// ===== QUESTION 8 (1889/90): Der große Bergarbeiterstreik =====
 function generateQuestion8() {
     const isOrganizer = gameState.isOrganizer;
     const hasSPD = gameState.hasJoinedSPD;
     const hasUnion = gameState.hasJoinedUnion;
     const awareness = gameState.politicalAwareness;
-    
     let situation = `Mai 1889: Der größte Bergarbeiterstreik im Ruhrgebiet beginnt. 90.000 Mann legen die Arbeit nieder. Die Forderungen: 8-Stunden-Schicht, 20% mehr Lohn, Ende der Willkür. Kaiser Wilhelm II. schickt Truppen. ${isOrganizer ? 'Du bist einer der geheimen Organisatoren – die Polizei sucht dich.' : hasUnion ? 'Du bist dabei, als einfacher Streikender.' : 'Du musst dich entscheiden: Mitmachen oder nicht?'} Dies ist der Moment.`;
-    
     return {
         title: "Frühjahr 1889 – Der große Bergarbeiterstreik",
         situation: situation,
