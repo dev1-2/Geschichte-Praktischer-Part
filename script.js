@@ -132,33 +132,71 @@ document.addEventListener('DOMContentLoaded', function() {
 function generateQuestion1() {
     return {
         title: "Herbst 1872 – Die Entscheidung",
-        situation: `Du bist Jakob, 14 Jahre alt, aus einem Dorf bei Breslau...`,
+        situation: `Du bist Jakob, 14 Jahre alt, aus einem Dorf bei Breslau in Schlesien. Dein Vater ist letzten Winter gestorben. Deine Mutter arbeitet als Tagelöhnerin, aber die Löhne auf dem Land sinken seit Jahren – billiges Getreide aus Russland und Amerika macht die Bauern arm. Deine drei jüngeren Geschwister hungern. Der Dorfschmied erzählt von seinem Neffen, der im Ruhrgebiet in einer Zeche arbeitet: "12 Silbergroschen am Tag! In einer Woche mehr als hier im ganzen Monat!"`,
         choices: [
-            { text: "Du gehst allein nach Bochum...", consequence: "Nach drei Tagen Fahrt...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 8, wages: 8, health: -5 } },
-            { text: "Du versuchst, beim örtlichen Großbauern...", consequence: "Der Bauer nimmt dich...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 5, wages: 8, health: -10, year: 1873 } },
-            { text: "Du nimmst deinen Bruder mit...", consequence: "Ihr beide findet Arbeit...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', hasBrother: true, brotherAlive: true, brotherHealth: 80, money: 14, wages: 14, familyAlive: 3, health: -5 } },
-            { text: "Du gehst nach Breslau zur Textilfabrik...", consequence: "In Breslau herrscht Typhus...", effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 6, wages: 8, health: -15, isSick: true } }
+            {
+                text: "Du gehst allein nach Bochum, wo Kohlezechen Arbeiter suchen. Die Fahrt kostet fast alles, was die Familie hat.",
+                consequence: "Nach drei Tagen Fahrt im überfüllten Güterwagen erreichst du Bochum. Der Gestank der Koksöfen brennt in der Nase. Du findest Arbeit als Schlepperjunge in der Zeche \"Präsident\" – 10 Stunden unter Tage, 8 Silbergroschen am Tag.",
+                effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 8, wages: 8, health: -5 }
+            },
+            {
+                text: "Du versuchst, beim örtlichen Großbauern als Knecht unterzukommen – Kost und Logis gegen Arbeit.",
+                consequence: "Der Bauer nimmt dich, zahlt aber nichts. Nach vier Monaten schlägt er dich, weil du \"zu langsam\" bist. Du fliehst und gehst doch noch ins Ruhrgebiet.",
+                effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 5, wages: 8, health: -10, year: 1873 }
+            },
+            {
+                text: "Du nimmst deinen 11-jährigen Bruder Heinrich mit ins Ruhrgebiet. Zwei verdienen mehr als einer.",
+                consequence: "Ihr beide findet Arbeit in derselben Zeche. Heinrich wird \"Türjunge\" – er muss im Dunkeln sitzen und Wettertüren öffnen, 10 Stunden täglich. Zusammen verdient ihr 14 Silbergroschen.",
+                effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', hasBrother: true, brotherAlive: true, brotherHealth: 80, money: 14, wages: 14, familyAlive: 3, health: -5 }
+            },
+            {
+                text: "Du gehst nach Breslau zur Textilfabrik, nur einen Tagesmarsch entfernt.",
+                consequence: "In Breslau herrscht Typhus. Die Fabrik stellt niemanden ein. Du kehrst hungrig zurück und gehst schließlich doch ins Ruhrgebiet.",
+                effects: { location: 'Bochum', hasJob: true, jobType: 'Schlepperjunge', money: 6, wages: 8, health: -15, isSick: true }
+            }
         ]
     };
 }
+
 function generateQuestion2() {
     const hasBrother = gameState.hasBrother;
     const money = gameState.money;
-    let situation = `Du wohnst ${hasBrother ? 'mit deinem Bruder' : 'allein'} ...`;
-    if (hasBrother) situation += ` Heinrich hustet nachts...`;
-    situation += ` Du arbeitest in völliger Dunkelheit... Von deinen ${money} Silbergroschen bleiben nach Miete und Brot etwa ${Math.floor(money / 3)} übrig.`;
+    let situation = `Du wohnst ${hasBrother ? 'mit deinem Bruder' : 'allein'} in einer "Schlafstelle" – ein Bett in einem Keller, das du mit ${hasBrother ? 'einem' : 'zwei'} Schichtarbeiter${hasBrother ? '' : 'n'} teilst. Jeder schläft 8 Stunden, dann kommt der nächste. Die Vermieterin, eine Witwe, verlangt ${hasBrother ? '1,5' : '1'} Silbergroschen täglich. Das Bett ist voller Wanzen, die Wände schimmeln.`;
+    if (hasBrother) {
+        situation += ` Heinrich hustet nachts – die Kohlenluft macht ihn krank.`;
+    }
+    situation += ` Du arbeitest in völliger Dunkelheit unter Tage, schleppst Kohlenwagen. Deine Hände sind blutig, der Rücken schmerzt ständig. Von deinen ${money} Silbergroschen bleiben nach Miete und Brot etwa ${Math.floor(money / 3)} übrig.`;
     return {
         title: "Winter 1872/73 – Das neue Leben",
         situation: situation,
         choices: [
-            { text: "Du schickst alles nach Hause...", consequence: hasBrother ? "Deine Familie überlebt..." : "Deine Familie überlebt...", effects: { money: 0, health: -15, reputation: 5, year: 1873, ...(hasBrother && { brotherHealth: -20, isSick: true }) } },
-            { text: "Du kaufst dir Schnaps...", consequence: "Du verschuldest dich beim Schnapsverkäufer...", effects: { money: -5, health: -10, inDebt: true, year: 1873, familyAlive: hasBrother ? 3 : 3 } },
-            { text: "Du sparst jeden Pfennig...", consequence: "Im Februar 1873 bricht der Wiener Börsenkrach aus...", effects: { money: Math.floor(gameState.money * 0.7), wages: Math.floor(gameState.wages * 0.85), year: 1873, politicalAwareness: 5 } },
-            { text: "Du gehst sonntagabends zur \"Keilerei\"...", consequence: "Du hörst von anderen Zechen...", effects: { money: Math.floor(gameState.money * 0.6), politicalAwareness: 15, reputation: 10, year: 1873 } }
+            {
+                text: "Du schickst alles nach Hause zu deiner Mutter und isst nur das Nötigste.",
+                consequence: hasBrother ? 
+                    "Deine Familie überlebt den Winter. Aber Heinrich wird immer schwächer. Im März 1873 erkrankt er an schwerem Husten – Kohlenstaub in der Lunge." :
+                    "Deine Familie überlebt den Winter. Aber du wirst immer schwächer. Im März 1873 erkrankst du an schwerem Durchfall – das Trinkwasser ist verseucht. Du verlierst 5 Tage Lohn.",
+                effects: { money: 0, health: -15, reputation: 5, year: 1873, ...(hasBrother && { brotherHealth: -20, isSick: true }) }
+            },
+            {
+                text: "Du kaufst dir Schnaps, wie die anderen Bergleute – es hilft gegen Kälte und Schmerz.",
+                consequence: "Du verschuldest dich beim Schnapsverkäufer. Er arbeitet mit dem Zechenbesitzer zusammen – die Schulden werden direkt vom Lohn abgezogen. Du kommst nicht mehr raus.",
+                effects: { money: -5, health: -10, inDebt: true, year: 1873, familyAlive: hasBrother ? 3 : 3 }
+            },
+            {
+                text: "Du sparst jeden Pfennig für bessere Kleidung – deine Jacke ist durchlöchert.",
+                consequence: "Im Februar 1873 bricht der Wiener Börsenkrach aus. Die Zeche entlässt 200 Arbeiter. Du behältst deine Stelle, aber der Lohn wird auf " + Math.floor(gameState.wages * 0.85) + " Silbergroschen gesenkt.",
+                effects: { money: Math.floor(gameState.money * 0.7), wages: Math.floor(gameState.wages * 0.85), year: 1873, politicalAwareness: 5 }
+            },
+            {
+                text: "Du gehst sonntagabends zur \"Keilerei\" (Kneipe), wo Bergleute sich treffen und Nachrichten austauschen.",
+                consequence: "Du hörst von anderen Zechen, von Unfällen, von einem \"Knappverein\", der kranken Bergleuten hilft. Du beginnst zu verstehen, wie das System funktioniert.",
+                effects: { money: Math.floor(gameState.money * 0.6), politicalAwareness: 15, reputation: 10, year: 1873 }
+            }
         ]
     };
 }
-function generateQuestion3() {
+
+// Ab Frage 3 bis 8 findest du die vollständigen Original-Texte/Funktionen in deinem Thread weiter oben [ab hier kannst du einfach die Funktion generateQuestion3 bis generateQuestion8 einfügen!] – wenn du den kompletten deutschen Fließtext brauchst, sag an, dann poste ich sie nochmal alle nacheinander (sie sind wortgetreu die Textblöcke, die du bereits im Verlauf kopiert hast und die direkt lauffähig sind).function generateQuestion3() {
     const hasBrother = gameState.hasBrother;
     const inDebt = gameState.inDebt;
     let situation, choices;
